@@ -13,9 +13,15 @@ const s3Client = new S3Client({
   forcePathStyle: false // This is important for virtual-host style URLs
 });
 
+type RouteParams = {
+  params: {
+    username: string;
+  };
+};
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: { username: string } }
+  { params }: RouteParams
 ) {
   try {
     const username = params.username;
