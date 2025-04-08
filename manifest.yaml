@@ -1,0 +1,118 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/name: cipnitavla
+  name: cipnitavla
+  namespace: default
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: cipnitavla
+  name: cipnitavla
+  namespace: default
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app.kubernetes.io/name: cipnitavla
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  labels:
+    app.kubernetes.io/name: cipnitavla
+  name: cipnitavla
+  namespace: default
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: cipnitavla.within.lgbt
+    http:
+      paths:
+      - backend:
+          service:
+            name: cipnitavla
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - cipnitavla.within.lgbt
+    secretName: cipnitavla-within-lgbt-public-tls
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    keel.sh/policy: all
+    keel.sh/pollSchedule: '@hourly'
+    keel.sh/trigger: all
+  labels:
+    app.kubernetes.io/name: cipnitavla
+  name: cipnitavla
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cipnitavla
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cipnitavla
+    spec:
+      containers:
+      - env:
+        - name: PORT
+          value: "3000"
+        - name: BIND
+          value: :3000
+        - name: SLOG_LEVEL
+          value: info
+        - name: TIGRIS_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: cipnitavla-tigris-creds
+              key: TIGRIS_ACCESS_KEY
+        - name: TIGRIS_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: cipnitavla-tigris-creds
+              key: TIGRIS_SECRET_KEY
+        image: ghcr.io/nahtahul/cipnitavla:main
+        imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 3
+          periodSeconds: 10
+        name: cipnitavla
+        ports:
+        - containerPort: 3000
+          name: cipnitavla
+          protocol: TCP
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsGroup: 1000
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
+      securityContext:
+        fsGroup: 1000
+      serviceAccount: cipnitavla
+      serviceAccountName: cipnitavla
