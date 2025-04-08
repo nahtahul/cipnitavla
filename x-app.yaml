@@ -1,0 +1,20 @@
+apiVersion: x.within.website/v1
+kind: App
+metadata:
+  name: cipnitavla
+
+spec:
+  image: ghcr.io/nahtahul/cipnitavla:main
+  autoUpdate: true
+
+  healthcheck:
+    enabled: true
+
+  ingress:
+    enabled: true
+    host: cipnitavla.within.lgbt
+
+  secrets:
+  - name: tigris-creds
+    itemPath: "vaults/lc5zo4zjz3if3mkeuhufjmgmui/items/cipnitavla"
+    environment: true
