@@ -13,18 +13,12 @@ const s3Client = new S3Client({
   forcePathStyle: false // This is important for virtual-host style URLs
 });
 
-type RouteParams = {
-  params: {
-    username: string;
-  };
-};
-
 export async function GET(
   request: NextRequest,
-  { params }: RouteParams
+  { params }: { params: Promise<{ username: string }> }
 ) {
   try {
-    const username = params.username;
+    const { username } = await params;
 
     // Create the command to get the object
     const command = new GetObjectCommand({
