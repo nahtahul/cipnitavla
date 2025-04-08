@@ -51,4 +51,28 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
-          cache-to: type=gha,mode=max 
+          cache-to: type=gha,mode=max
+
+      - name: Install kubectl
+        if: github.event_name != 'pull_request'
+        uses: azure/setup-kubectl@v3
+
+      - name: Set up kubeconfig
+        if: github.event_name != 'pull_request'
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Update Kubernetes deployment
+        if: github.event_name != 'pull_request'
+        run: |
+          # Get the SHA tag
+          SHA_TAG=$(echo "${{ steps.meta.outputs.tags }}" | grep "sha-" | head -n 1)
+          echo "Deploying image: $SHA_TAG"
+          
+          # Update the deployment with the new image
+          kubectl set image deployment/cipnitavla cipnitavla=$SHA_TAG
+          
+          # Wait for rollout to complete
+          kubectl rollout status deployment/cipnitavla 
