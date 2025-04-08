@@ -1,14 +1,23 @@
-# Cipnitavla - Avatar Management Service
+# Cipnitavla
 
-Cipnitavla is a modern avatar management service built with Next.js 15, providing a simple and efficient way to handle user avatars through a RESTful API. The service integrates with Tigris for secure and scalable object storage.
+Cipnitavla is a simplified Twitter clone built with Next.js 15, designed as a learning project to explore modern web development practices. The name "Cipnitavla" adds a playful twist to social media, while the project demonstrates practical implementation of Next.js features and best practices.
 
 ## Features
 
-- **Avatar Storage**: Secure storage of user avatars using Tigris object storage
-- **Presigned URLs**: Generate secure, time-limited URLs for avatar access
-- **RESTful API**: Simple API endpoints for avatar management
+- **User Profiles**: Create and customize your profile with avatars
+- **Posts**: Share your thoughts with text-based posts
+- **Real-time Updates**: Experience instant updates using Next.js App Router
+- **Modern UI**: Clean, responsive interface built with Tailwind CSS
 - **Type Safety**: Full TypeScript support with strict type checking
-- **Modern Stack**: Built with Next.js 15 App Router and latest web standards
+- **Secure Storage**: User data and avatars stored securely with Tigris
+
+## Tech Stack
+
+- **Frontend**: Next.js 15 with App Router, React 19
+- **Styling**: Tailwind CSS
+- **Storage**: Tigris for object storage (avatars)
+- **Type Safety**: TypeScript
+- **Linting**: ESLint
 
 ## Prerequisites
 
@@ -47,7 +56,7 @@ The server will start at [http://localhost:3000](http://localhost:3000).
 
 ## API Endpoints
 
-### Get Avatar URL
+### Get User Avatar
 ```http
 GET /api/avatar/[username]
 ```
@@ -61,6 +70,31 @@ Returns a presigned URL for accessing a user's avatar.
 }
 ```
 
+More endpoints coming soon!
+
+## Project Structure
+
+```
+cipnitavla/
+├── src/
+│   ├── app/              # Next.js App Router pages and API routes
+│   ├── components/       # Reusable React components
+│   └── lib/             # Utility functions and shared logic
+├── public/              # Static assets
+└── ...configuration files
+```
+
+## Learning Goals
+
+This project is designed to help learn:
+- Next.js 15 App Router architecture
+- React Server Components
+- API Routes in Next.js
+- TypeScript best practices
+- Secure file storage with Tigris
+- Modern CSS with Tailwind
+- Authentication and authorization (coming soon)
+
 ## Building for Production
 
 Build the application:
@@ -71,13 +105,6 @@ npm run build
 Start the production server:
 ```bash
 npm start
-```
-
-## Testing
-
-Run the test suite:
-```bash
-npm test
 ```
 
 ## Contributing
@@ -96,3 +123,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Built with [Next.js](https://nextjs.org)
 - Storage powered by [Tigris](https://www.tigrisdata.com)
+- Inspired by Twitter's core functionality
