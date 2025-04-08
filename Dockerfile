@@ -11,7 +11,7 @@ RUN npm ci
 COPY . .
 
 # Build the application
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
 # Stage 2: Production image
@@ -20,7 +20,7 @@ FROM node:20-slim AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED=1
 
 # Copy necessary files from builder
 COPY --from=builder /app/next.config.mjs ./
@@ -29,8 +29,8 @@ COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 
 # Set environment variables
-ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
 EXPOSE 3000
 

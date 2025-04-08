@@ -15,11 +15,9 @@ const s3Client = new S3Client({
 
 export async function GET(
   request: NextRequest,
-  context: { params: { username: string } }
+  { params }: { params: { username: string } }
 ) {
   try {
-    // In Next.js App Router, we need to await the params
-    const params = await Promise.resolve(context.params);
     const username = params.username;
 
     // Create the command to get the object
