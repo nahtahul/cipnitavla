@@ -107,6 +107,36 @@ Start the production server:
 npm start
 ```
 
+## Deployment
+
+Cipnitavla uses a fully automated CI/CD pipeline for deployment to Kubernetes:
+
+### Continuous Integration
+- GitHub Actions automatically builds and pushes Docker images on every push to main
+- Images are tagged with the commit SHA for precise version tracking
+- Images are stored in GitHub Container Registry (ghcr.io)
+
+### Kubernetes Deployment
+- Automatic deployment to Kubernetes when new images are pushed
+- Uses SHA-tagged images for reliable version tracking and rollbacks
+- Configuration includes:
+  - Ingress with automatic HTTPS (cert-manager)
+  - Environment variables from Kubernetes secrets
+  - Health checks and zero-downtime deployments
+  - Security context for enhanced container security
+
+### Infrastructure
+- Manifest files in `manifest.yaml` define the complete Kubernetes setup:
+  - Service for internal networking
+  - Ingress for external access
+  - Deployment with security settings
+  - ServiceAccount for pod permissions
+
+To deploy manually (if needed):
+```bash
+kubectl apply -f manifest.yaml
+```
+
 ## Contributing
 
 1. Fork the repository
