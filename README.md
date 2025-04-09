@@ -1,6 +1,6 @@
 # Cipnitavla
 
-Cipnitavla is a simplified Twitter clone built with Next.js 15, designed as a learning project to explore modern web development practices. The name "Cipnitavla" adds a playful twist to social media, while the project demonstrates practical implementation of Next.js features and best practices.
+Cipnitavla (from Lojban "cipni" - bird, "tavla" - talk) is a simplified Twitter clone built with Next.js 15, designed as a learning project to explore modern web development practices. The name cleverly means "bird talk" or "tweet" in Lojban, reflecting the project's Twitter-inspired functionality while adding a linguistic twist.
 
 ## Features
 
