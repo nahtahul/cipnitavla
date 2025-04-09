@@ -15,7 +15,8 @@
     "mime-types": "^3.0.1",
     "next": "15.2.4",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-image-crop": "^11.0.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

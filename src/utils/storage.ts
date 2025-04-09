@@ -4,17 +4,20 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { lookup } from 'mime-types';
 
 // Configure S3 client to use Tigris endpoint
-export const s3Client = new S3Client({
-  endpoint: "https://fly.storage.tigris.dev",
-  region: "auto",
-  credentials: {
-    accessKeyId: process.env.TIGRIS_ACCESS_KEY || 'dummy',
-    secretAccessKey: process.env.TIGRIS_SECRET_KEY || 'dummy'
-  },
-  forcePathStyle: false
-});
+function getS3Client() {
+  return new S3Client({
+    endpoint: "https://fly.storage.tigris.dev",
+    region: "auto",
+    credentials: {
+      accessKeyId: process.env.TIGRIS_ACCESS_KEY || 'dummy',
+      secretAccessKey: process.env.TIGRIS_SECRET_KEY || 'dummy'
+    },
+    forcePathStyle: false
+  });
+}
 
-export const bucket = process.env.TIGRIS_BUCKET || 'cipnitavla';
+export const bucket = async () =>
+  process.env.TIGRIS_BUCKET || 'cipnitavla';
 
 export type UploadFileParams = {
   file: File | Buffer;
@@ -68,6 +71,7 @@ export async function uploadFile({
       }
     }
 
+    const s3Client = getS3Client();
     const command = new PutObjectCommand({
       Bucket: bucket,
       Key: key,
