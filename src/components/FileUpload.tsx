@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { uploadFile } from '@/utils/storage';
 
 interface FileUploadProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onUploadComplete?: (result: any) => void;
   onError?: (error: Error) => void;
   bucket?: string;
